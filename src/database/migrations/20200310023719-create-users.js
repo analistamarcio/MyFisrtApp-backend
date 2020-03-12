@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      location: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       city: {
         type: Sequelize.STRING,
         allowNull: true,
