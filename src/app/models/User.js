@@ -21,20 +21,16 @@ class User extends Model {
 
     // encrypt name, email and password
     this.addHook('beforeSave', async user => {
-      if (user.name) {
-        user.name_hash = await bcrypt.hash(user.name, 8);
-      }
-
-      if (user.email) {
-        user.email_hash = await bcrypt.hash(user.email, 8);
-      }
-
       if (user.password) {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
     });
 
     return this;
+  }
+
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
   }
 }
 
