@@ -7,11 +7,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      name_hash: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email_hash: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
