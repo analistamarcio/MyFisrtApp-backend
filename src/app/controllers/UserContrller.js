@@ -2,10 +2,20 @@ import User from '../models/User';
 
 class UserController {
   async store(req, res) {
-    const userExists = await User.findOne({ where: { email: req.body.email } });
+    /**
+     * check if name isn't empty
+     */
 
-    if (userExists) {
-      return res.status(400).json({ error: 'User already exists ' });
+    /**
+     * test for password rules
+     */
+
+    // check if email alread exists
+    const emailUsed = await User.findOne({
+      where: { email_hash: req.body.email },
+    });
+    if (emailUsed) {
+      return res.status(400).json({ error: 'Email already used' });
     }
 
     const {
