@@ -7,8 +7,8 @@ class User extends Model {
       {
         name: Sequelize.STRING,
         email: Sequelize.STRING,
-        password: Sequelize.VIRTUAL,
-        password_hash: Sequelize.STRING,
+        passwordPlainText: Sequelize.VIRTUAL,
+        password: Sequelize.STRING,
         location: Sequelize.STRING,
         city: Sequelize.STRING,
         province: Sequelize.STRING,
@@ -19,18 +19,19 @@ class User extends Model {
       }
     );
 
-    // encrypt name, email and password
+    // encrypt password
     this.addHook('beforeSave', async user => {
-      if (user.password) {
-        user.password_hash = await bcrypt.hash(user.password, 8);
+      console.log(user.passwordPlainText);
+      if (user.passwordPlainText) {
+        user.password = await bcrypt.hash(user.passwordPlainText, 8);
       }
     });
 
     return this;
   }
 
-  checkPassword(password) {
-    return bcrypt.compare(password, this.password_hash);
+  checkPassword(passwordPlainText) {
+    return bcrypt.compare(passwordPlainText, this.password);
   }
 }
 

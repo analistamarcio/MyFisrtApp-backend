@@ -7,8 +7,18 @@ class UserController {
       return res.status(400).json({ error: 'Name is required' });
     }
 
+    // check if password isn't empty
+    if (!req.body.password) {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+
+    // check if email isn't empty
+    if (!req.body.email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
     /**
-     * test for password rules
+     * test for password rules (code pending)
      */
 
     // check if email alread exists
