@@ -5,10 +5,11 @@ class User extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: Sequelize.STRING,
+        name: Sequelize.VIRTUAL,
+        name_hash: Sequelize.STRING,
         email: Sequelize.STRING,
-        passwordPlainText: Sequelize.VIRTUAL,
-        password: Sequelize.STRING,
+        password: Sequelize.VIRTUAL,
+        password_hash: Sequelize.STRING,
         location: Sequelize.STRING,
         city: Sequelize.STRING,
         province: Sequelize.STRING,
@@ -19,19 +20,22 @@ class User extends Model {
       }
     );
 
-    // encrypt password
+    // encrypt name and password
     this.addHook('beforeSave', async user => {
-      console.log(user.passwordPlainText);
-      if (user.passwordPlainText) {
-        user.password = await bcrypt.hash(user.passwordPlainText, 8);
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8);
+      }
+
+      if (user.name) {
+        user.name_hash = await bcrypt.hash(user.name, 8);
       }
     });
 
     return this;
   }
 
-  checkPassword(passwordPlainText) {
-    return bcrypt.compare(passwordPlainText, this.password);
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
   }
 }
 

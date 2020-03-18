@@ -7,7 +7,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      name_hash: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -16,7 +16,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      password: {
+      password_hash: {
         type: Sequelize.STRING,
         allowNull: false,
       },
