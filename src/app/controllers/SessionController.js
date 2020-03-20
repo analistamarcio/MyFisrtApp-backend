@@ -29,6 +29,7 @@ class SessionController {
     }
 
     const { id, name } = user;
+    console.log(`id = ${id}`);
 
     return res.json({
       user: {
