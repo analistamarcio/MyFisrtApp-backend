@@ -41,20 +41,10 @@ class UserController {
   }
 
   async update(req, res) {
-    // check if name isn't empty
-    // if (!req.body.name) {
-    //   return res.status(400).json({ error: 'Name is required' });
-    // }
-
     // check if password isn't empty
     if (!req.body.password) {
       return res.status(400).json({ error: 'Password is required' });
     }
-
-    // check if email isn't empty
-    // if (!req.body.email) {
-    //   return res.status(400).json({ error: 'Email is required' });
-    // }
 
     /**
      * test for password rules (code pending)
