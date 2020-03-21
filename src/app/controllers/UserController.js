@@ -12,14 +12,19 @@ class UserController {
       return res.status(400).json({ error: 'Password is required' });
     }
 
+    // Password rules chequing
+    const rgexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+    if (!req.body.password.match(rgexPass)) {
+      return res.status(400).json({
+        error:
+          'Your password must have at least 8 characters with at least one Capital letter, at least one lower case letter and at least one number or special character',
+      });
+    }
+
     // check if email isn't empty
     if (!req.body.email) {
       return res.status(400).json({ error: 'Email is required' });
     }
-
-    /**
-     * test for password rules (code pending)
-     */
 
     // check if email alread exists
     const emailUsed = await User.findOne({ where: { email: req.body.email } });
@@ -46,10 +51,6 @@ class UserController {
       return res.status(400).json({ error: 'Password is required' });
     }
 
-    /**
-     * test for password rules (code pending)
-     */
-
     const { email, newPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
@@ -59,6 +60,7 @@ class UserController {
       return res.status(440).json({ error: 'Login Time-out' });
     }
 
+    // check if new provided email alread not exists
     if (email && email !== user.email) {
       const emailUsed = await User.findOne({ where: { email } });
       if (emailUsed) {
@@ -66,8 +68,18 @@ class UserController {
       }
     }
 
+    // if newPassword provided, check current password
     if (newPassword && !(await user.checkPassword(req.body.password))) {
       return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    // Password rules chequing
+    const rgexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+    if (!req.body.password.match(rgexPass)) {
+      return res.status(400).json({
+        error:
+          'Your password must have at least 8 characters with at least one Capital letter, at least one lower case letter and at least one number or special character',
+      });
     }
     req.body.password = newPassword;
 
